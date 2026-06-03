@@ -956,18 +956,6 @@ async function handleSubmit() {
     btn.textContent = 'Submit your enquiry →';
   }
 }
-
-// ── TOAST ────────────────────────────────────────────────────────────────────
-let toastTimer;
-function showToast(type, title, msg) {
-  const t = document.getElementById('toast');
-  t.className = `toast ${type} show`;
-  document.getElementById('toastIco').textContent = { success: '✓', error: '✕', info: 'i' }[type] || 'i';
-  document.getElementById('toastTitle').textContent = title;
-  document.getElementById('toastMsg').textContent = msg;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 6000);
-}
 </script>
 </body>
 </html>
