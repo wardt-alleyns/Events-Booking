@@ -928,12 +928,10 @@ async function handleSubmit() {
   btn.disabled = true;
   btn.textContent = 'Submitting request to cloud…';
 
-  // Connected to live Power Automate Flow EndPoint Engine
   const FLOW_WEBHOOK_URL = "https://default7124aac53b5c4043ab8a47b2fa68f3.e7.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/0dcaf9b8b2774fc892182abfc98d3a86/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=9WPKlh1hQG2gNDMiuOpnldaYbdaOgPRRLd8YzkHoSdA";
 
   try {
-    // 1. Post JSON Payload to Power Automate
-    if (FLOW_WEBHOOK_URL && FLOW_WEBHOOK_URL !== "YOUR_POWER_AUTOMATE_HTTP_URL_HERE") {
+    if (FLOW_WEBHOOK_URL) {
       const response = await fetch(FLOW_WEBHOOK_URL, {
         method: 'POST',
         headers: {
@@ -947,18 +945,7 @@ async function handleSubmit() {
       }
     }
 
-    // 2. Generate and download briefing document (.docx)
-    btn.textContent = 'Generating briefing document…';
-    const blob = await generateDocx(d);
-    const safe = d.displayName.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '-').slice(0, 40);
-    const dateStamp = new Date().toISOString().slice(0, 10);
-    const filename = `Event-Briefing_${safe}_${dateStamp}.docx`;
-
-    const url = URL.createObjectURL(blob);
-    Object.assign(document.createElement('a'), { href: url, download: filename }).click();
-    URL.revokeObjectURL(url);
-
-    // 3. Update view to success state
+    // Update view to success state immediately—no fragile local document rendering required!
     document.getElementById('progressBar').style.display = 'none';
     ['s1','s2','s3','s4','s5'].forEach(id => document.getElementById(id).classList.remove('visible'));
     document.getElementById('successScreen').classList.add('show');
