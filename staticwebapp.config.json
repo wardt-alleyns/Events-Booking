@@ -1,5 +1,5 @@
 {
-  "routeRules": [
+  "routes": [
     {
       "route": "/*",
       "allowedRoles": ["authenticated"]
