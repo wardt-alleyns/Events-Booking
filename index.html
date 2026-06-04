@@ -635,7 +635,7 @@ const CAT_MAP = {
   "End of term service":{s:"D",o:"4"},"EPQ Presentation":{s:"C",o:"3"},
   "External Event":{s:"B",o:"2"},"Festival of Inspiration":{s:"C",o:"2"},
   "Founders Day":{s:"A",o:"1"},"Gala Dinner":{s:"B",o:"2"},"Holly Fair":{s:"B",o:"2"},
-  "House Event":{s:"C",o:"3"},"Information evening":{s:"C",o:"3"},
+  "House Event":{s:"C",o:"3"},"Information evening":{s:"D",o:"4"},
   "Internal meeting":{s:"D",o:"4"},"LAMDA Showcase":{s:"C",o:"3"},
   "Lectures (external)":{s:"B",o:"2"},"Lectures (internal)":{s:"D",o:"4"},
   "Options Evening":{s:"C",o:"3"},"Pastoral Evening":{s:"C",o:"3"},
@@ -740,15 +740,31 @@ function gatherData() {
 // ── AZURE SWA IDENTITY AUTO-FILL ─────────────────────────────────────────────
 async function initSWAAuth() {
   try {
-    const res = await fetch('//.auth/me');
+    const res = await fetch('/.auth/me'); // Fixed endpoint path lookup
     const data = await res.json();
+    
     if (data && data.clientPrincipal) {
       const principal = data.clientPrincipal;
       const email = principal.userDetails; 
+      let name = "";
       
+      if (principal.claims) {
+        const nameClaim = principal.claims.find(c => c.typ === "name" || c.typ === "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
+        if (nameClaim) name = nameClaim.val;
+      }
+      if (!name && email) {
+        name = email.split('@')[0].replace(/[^a-zA-Z0-9]/g, ' ');
+      }
+      
+      const nameInput = document.getElementById('reqName');
       const emailInput = document.getElementById('reqEmail');
+      
+      if (nameInput && name) { 
+        nameInput.value = name; 
+        nameInput.classList.add('auto-field');
+      }
       if (emailInput && email) { 
-        emailInput.value = email; 
+        emailInput.value = email; // Direct variable mapping ensures fallback text is replaced
         emailInput.classList.add('auto-field');
       }
     }
@@ -775,7 +791,6 @@ async function handleSubmit() {
   const FLOW_WEBHOOK_URL = "https://default7124aac53b5c4043ab8a47b2fa68f3.e7.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/0dcaf9b8b2774fc892182abfc98d3a86/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=9WPKlh1hQG2gNDMiuOpnldaYbdaOgPRRLd8YzkHoSdA";
 
   try {
-    // Post to Power Automate EndPoint (Triggers SharePoint Item Creation & Doc Generation)
     if (FLOW_WEBHOOK_URL && FLOW_WEBHOOK_URL !== "YOUR_POWER_AUTOMATE_HTTP_URL_HERE") {
       const response = await fetch(FLOW_WEBHOOK_URL, {
         method: 'POST',
@@ -786,13 +801,14 @@ async function handleSubmit() {
       });
 
       if (!response.ok) {
-        throw new Error(`Cloud transaction failed with code status: ${response.status}`);
+        throw new Error(`Cloud transaction failed with status code: ${response.status}`);
       }
     } else {
-      console.warn("Warning: FLOW_WEBHOOK_URL matches default variable template. Skipping SharePoint post transaction.");
+      console.warn("Warning: FLOW_WEBHOOK_URL matches default template. Skipping live connection.");
     }
 
-    // Update view to success state immediately — no client-side file compiling or downloading required!
+    // Swapped out original client-side document compiler code block. 
+    // View shifts straight to success step while Power Automate builds the file on the backend.
     document.getElementById('progressBar').style.display = 'none';
     ['s1','s2','s3','s4','s5'].forEach(id => document.getElementById(id).classList.remove('visible'));
     document.getElementById('successScreen').classList.add('show');
