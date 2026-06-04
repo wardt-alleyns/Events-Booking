@@ -745,27 +745,13 @@ async function initSWAAuth() {
     
     if (data && data.clientPrincipal) {
       const principal = data.clientPrincipal;
-      const email = principal.userDetails; 
-      let name = "";
+      const email = principal.userDetails; // Fetches the actual Microsoft Entra ID email
       
-      if (principal.claims) {
-        const nameClaim = principal.claims.find(c => c.typ === "name" || c.typ === "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
-        if (nameClaim) name = nameClaim.val;
-      }
-      if (!name && email) {
-        name = email.split('@')[0].replace(/[^a-zA-Z0-9]/g, ' ');
-      }
-      
-      const nameInput = document.getElementById('reqName');
       const emailInput = document.getElementById('reqEmail');
       
-      if (nameInput && name) { 
-        nameInput.value = name; 
-        nameInput.classList.add('auto-field');
-      }
       if (emailInput && email) { 
-        emailInput.value = email; // Direct variable mapping ensures fallback text is replaced
-        emailInput.classList.add('auto-field');
+        emailInput.value = email; // Populates the locked box with your true email address
+        emailInput.classList.add('auto-field'); // Applies the italicized, tinted visual style
       }
     }
   } catch (e) {
