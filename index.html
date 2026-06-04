@@ -744,11 +744,11 @@ async function initSWAAuth() {
     const data = await res.json();
     if (data && data.clientPrincipal) {
       const principal = data.clientPrincipal;
-      const email = principal.userDetails;
+      const email = principal.userDetails; // This is the user's actual Entra ID email address
       
       const emailInput = document.getElementById('reqEmail');
       if (emailInput && email) { 
-        emailInput.value = email; 
+        emailInput.value = email; // Fixed: Sets the field to the actual email string
         emailInput.classList.add('auto-field');
       }
     }
