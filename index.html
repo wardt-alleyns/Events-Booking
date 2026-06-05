@@ -740,22 +740,34 @@ function gatherData() {
 // ── AZURE SWA IDENTITY AUTO-FILL ─────────────────────────────────────────────
 async function initSWAAuth() {
   try {
-    const res = await fetch('/.auth/me'); // Fixed endpoint path lookup
+    const res = await fetch('//.auth/me');
     const data = await res.json();
     
     if (data && data.clientPrincipal) {
       const principal = data.clientPrincipal;
-      const email = principal.userDetails; // Fetches the actual Microsoft Entra ID email
+      const email = principal.userDetails; 
       
+      // 🔒 THE SECURITY CHECK: Force school domain
+      if (!email.toLowerCase().endsWith('@alleyns.org.uk')) {
+        document.body.innerHTML = `
+          <div style="text-align:center; margin-top:100px; font-family:sans-serif;">
+            <h2>🚫 Access Denied</h2>
+            <p>This application is strictly restricted to Alleyn's School accounts.</p>
+            <p>Logged in as: <b>${email}</b></p>
+            <a href="/.auth/logout">Log out and switch accounts</a>
+          </div>`;
+        return; // Stop execution entirely
+      }
+      
+      // If it passes, populate the email field as normal
       const emailInput = document.getElementById('reqEmail');
-      
       if (emailInput && email) { 
-        emailInput.value = email; // Populates the locked box with your true email address
-        emailInput.classList.add('auto-field'); // Applies the italicized, tinted visual style
+        emailInput.value = email;
+        emailInput.classList.add('auto-field');
       }
     }
   } catch (e) {
-    console.warn("Form running outside an active Azure SWA Entra context or unauthenticated:", e);
+    console.warn("Outside active SWA context:", e);
   }
 }
 window.addEventListener('DOMContentLoaded', initSWAAuth);
