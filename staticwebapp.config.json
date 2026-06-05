@@ -1,19 +1,14 @@
 {
-  "auth": {
-    "identityProviders": {
-      "azureActiveDirectory": {
-        "registration": {
-          "openIdConnectConfiguration": {
-            "wellKnownOpenIdConfiguration": "https://login.microsoftonline.com/7124aac5-3b5c-4043-ab8a-47b2fa68f3e7/v2.0/.well-known/openid-configuration"
-          }
-        }
-      }
-    }
-  },
   "routes": [
     {
       "route": "/*",
       "allowedRoles": ["authenticated"]
     }
-  ]
+  ],
+  "responseOverrides": {
+    "401": {
+      "redirect": "/.auth/login/aad",
+      "statusCode": 302
+    }
+  }
 }
