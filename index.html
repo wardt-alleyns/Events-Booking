@@ -232,8 +232,8 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
         <input type="text" id="reqName" placeholder="Full name">
       </div>
       <div class="field">
-        <label for="reqEmail">Email address <span class="req">*</span></label>
-        <input type="email" id="reqEmail" placeholder="name@alleyns.org.uk">
+        <label for="reqEmail">Email address <span class="req">*</span> <span class="hint">(Locked to login)</span></label>
+        <input type="email" id="reqEmail" placeholder="name@alleyns.org.uk" readonly>
       </div>
     </div>
 
@@ -609,9 +609,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (data && data.clientPrincipal) {
       const user = data.clientPrincipal;
       const email = user.userDetails;
-      document.getElementById('reqEmail').value = email || '';
-      const nameFromClaims = user.claims?.find(c => c.typ === 'name')?.val;
-      document.getElementById('reqName').value = nameFromClaims || email.split('@')[0] || '';
+      const emailInput = document.getElementById('reqEmail');
+      
+      if (emailInput && email) {
+        emailInput.value = email;
+        emailInput.classList.add('auto-field');
+      }
     }
   } catch (err) {
     // SWA auth details endpoint not reachable or unauthenticated local dev
