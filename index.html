@@ -4,119 +4,608 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Alleyn's School — Booking Request Form</title>
+<link rel="icon" type="image/png" href="https://web.alleyns.org.uk/images/NewBranding/MinimalCrest.png">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700&display=swap');
 
 :root {
-  --blue:#1a3a5c; --blue-mid:#2d5f8a; --blue-light:#ddeaf7; --blue-faint:#f0f5fb;
-  --gold:#b8821a; --cream:#fbf7ec; --cream-border:#eadfc0; --cream-text:#6b5828;
-  --text:#1c1c1c; --text-mid:#444; --text-muted:#777;
-  --border:#cdd8e8; --bg:#f5f6f8; --white:#fff;
-  --green:#1a6644; --green-light:#e6f4ec; --green-border:#a3d4b8;
-  --red:#8b1a1a; --red-light:#fdf0f0; --red-border:#e4a3a3;
-  --radius:5px; --radius-lg:10px;
-  --font:'Futura PT','Futura','Century Gothic','Nunito Sans','Trebuchet MS',sans-serif;
+  /* Brand Guidelines Color Palette */
+  --blue: #5576d1;        /* Primary Brand Blue (Pantone 2130C) */
+  --blue-dark: #3f5cb0;   /* Hover / Dark Accent Blue */
+  --blue-accent: #a7c6ed; /* Reversed Accent Blue (Pantone 2717C) */
+  --blue-faint: #f2f5fc;  /* Soft Blue Surface Background */
+  
+  /* Secondary Accent Colors */
+  --gold: #ffb838;
+  --teal: #2ad2c9;
+  --pink: #edb5db;
+  --green: #c5e86c;
+  --yellow: #f4da40;
+  
+  /* UI Neutral & Utility Colors */
+  --text: #1e293b;
+  --text-mid: #475569;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --bg: #ffffff;
+  --white: #ffffff;
+  --red: #e11d48;
+  --red-light: #fff1f2;
+  --red-border: #fecdd3;
+  
+  --radius: 4px;
+  --radius-lg: 8px;
+  --font: 'Futura PT', Futura, 'Arial', sans-serif;
 }
+
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;font-size:14px;letter-spacing:.01em}
 
-.header{background:var(--blue);height:58px;display:flex;align-items:center;padding:0 40px;position:sticky;top:0;z-index:200}
-.header-logo{color:#fff;font-size:15px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
-.header-logo em{color:#f0c060;font-style:normal;margin:0 6px}
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+}
 
-.page{max-width:800px;margin:0 auto;padding:44px 24px 80px}
-.page-head{margin-bottom:26px}
-.page-title{font-size:30px;font-weight:700;color:var(--blue);letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px}
-.page-sub{font-size:14px;color:var(--text-muted);max-width:640px}
+.header {
+  background: var(--blue);
+  height: 72px;
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
 
-.progress-bar{display:flex;margin-bottom:26px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border);background:var(--white)}
-.prog-step{flex:1;padding:11px 6px;text-align:center;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);cursor:pointer;border-right:1px solid var(--border);background:var(--white);transition:background .18s,color .18s;user-select:none}
-.prog-step:last-child{border-right:none}
-.prog-step .sn{display:block;font-size:9px;font-weight:400;letter-spacing:.04em;opacity:.65;margin-bottom:2px;text-transform:uppercase}
-.prog-step.active{background:var(--blue);color:#fff}
-.prog-step.done{background:var(--blue-light);color:var(--blue)}
+.header-logo {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
 
-.section{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:30px 32px;margin-bottom:18px;display:none}
-.section.visible{display:block}
-.section-tag{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px}
-.section-tag::after{content:'';flex:1;height:1px;background:var(--border)}
-.section-title{font-size:20px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--blue);margin-bottom:4px}
-.section-desc{font-size:13px;color:var(--text-muted);margin-bottom:22px}
+.header-logo em {
+  gap: 10px;
+  color: var(--gold);
+  font-style: normal;
+}
 
-.fg{display:grid;gap:16px;margin-bottom:16px}
-.fg.col2{grid-template-columns:1fr 1fr}
-.fg.col1{grid-template-columns:1fr}
-.field{display:flex;flex-direction:column;gap:5px}
-label{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-mid)}
-label .req{color:var(--gold);margin-left:2px}
-label .hint{font-weight:400;color:var(--text-muted);font-size:11px;margin-left:4px;text-transform:none;letter-spacing:0}
+.header-crest {
+  height: 48px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+  order: -1; /* Forces the crest to render to the left of the text */
+}
 
-input[type=text],input[type=email],input[type=date],input[type=time],input[type=number],select,textarea{
-  font-family:var(--font);font-size:14px;padding:9px 13px;border:1px solid var(--border);border-radius:var(--radius);
-  background:#fff;color:var(--text);width:100%;transition:border-color .15s;letter-spacing:.01em}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue-mid);box-shadow:0 0 0 3px rgba(45,95,138,.09)}
-textarea{resize:vertical;min-height:78px}
-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M.5.5l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:34px;appearance:none}
+.page {
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
 
-.pill-group{display:flex;flex-wrap:wrap;gap:7px}
-.pill{display:inline-flex;align-items:center;font-size:13px;color:var(--text-mid);background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:5px 14px;cursor:pointer;transition:all .15s;user-select:none;letter-spacing:.02em}
-.pill input{display:none}
-.pill.sel{background:var(--blue-light);border-color:var(--blue-mid);color:var(--blue);font-weight:600}
+.page-head {
+  margin-bottom: 30px;
+}
 
-.cond{display:none}
-.cond.show{display:block;animation:fi .2s}
-@keyframes fi{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.page-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
 
-.auto-field{background:var(--blue-faint)!important;color:var(--text-mid)!important;border-color:var(--blue-light)!important;font-style:italic}
+.page-sub {
+  font-size: 14px;
+  color: var(--text-muted);
+  max-width: 680px;
+}
 
-/* Notes / callouts */
-.note{border-radius:var(--radius);padding:12px 15px;font-size:13px;line-height:1.6;letter-spacing:.01em}
-.note-info{background:var(--blue-faint);border:1px solid var(--blue-light);color:var(--text-mid)}
-.note-lead{background:var(--cream);border:1px solid var(--cream-border);color:var(--cream-text);margin-bottom:22px}
-.note-lead strong{color:#4d3f16}
-.note a{color:var(--blue);font-weight:600}
+/* Borderless Modern Progress Bar */
+.progress-bar {
+  display: flex;
+  margin-bottom: 32px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: none;
+  background: var(--blue-faint);
+}
 
-/* Custom date chips */
-.date-adder{display:flex;gap:8px;align-items:flex-end}
-.date-adder .field{flex:1}
-.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
-.chip{display:inline-flex;align-items:center;gap:8px;background:var(--blue-light);color:var(--blue);border:1px solid var(--blue-mid);border-radius:20px;padding:5px 8px 5px 13px;font-size:12px;font-weight:600}
-.chip button{background:var(--blue);color:#fff;border:none;width:17px;height:17px;border-radius:50%;cursor:pointer;font-size:11px;line-height:1;display:flex;align-items:center;justify-content:center}
-.chip-empty{font-size:12px;color:var(--text-muted);font-style:italic;margin-top:8px}
+.prog-step {
+  flex: 1;
+  padding: 12px 8px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: all 0.2s ease;
+  user-select: none;
+  position: relative;
+}
 
-.nav-row{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
-.btn{font-family:var(--font);font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:10px 22px;border-radius:var(--radius);cursor:pointer;transition:all .15s;border:1px solid var(--border);background:var(--white);color:var(--text-mid)}
-.btn:hover{border-color:var(--blue);color:var(--blue)}
-.btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}
-.btn-primary:hover{background:var(--blue-mid);border-color:var(--blue-mid)}
-.btn-primary:disabled{background:#aaa;border-color:#aaa;cursor:not-allowed}
-.btn-add{padding:9px 16px;font-size:11px}
-.btn-submit{padding:13px 34px;font-size:13px}
+.prog-step .sn {
+  display: block;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  opacity: 0.75;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+}
 
-.toast{position:fixed;bottom:28px;right:28px;padding:14px 18px;border-radius:var(--radius-lg);font-family:var(--font);font-size:13px;max-width:360px;z-index:9999;transform:translateY(16px);opacity:0;transition:all .3s;pointer-events:none;display:flex;gap:10px;align-items:flex-start}
-.toast.show{transform:translateY(0);opacity:1;pointer-events:auto}
-.toast.error{background:var(--red-light);color:var(--red);border:1px solid var(--red-border)}
-.toast.info{background:var(--blue-light);color:var(--blue);border:1px solid var(--border)}
-.toast-ico{font-size:16px;flex-shrink:0;margin-top:1px}
-.toast-title{font-weight:600;margin-bottom:2px}
-.toast-msg{font-size:12px;opacity:.85}
+.prog-step.active {
+  background: var(--blue);
+  color: #fff;
+}
 
-.success-screen{display:none;text-align:center;padding:60px 20px}
-.success-screen.show{display:block}
-.suc-icon{width:70px;height:70px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:30px;color:#fff}
-.success-screen h2{font-size:26px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--blue);margin-bottom:20px}
-.success-msg{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px 36px;max-width:540px;margin:0 auto 28px;text-align:left;line-height:1.75}
-.success-msg p{font-size:14px;color:var(--text-mid);margin-bottom:12px}
-.success-msg p:last-child{margin-bottom:0}
-.success-msg strong{color:var(--blue)}
-.success-msg a{color:var(--blue)}
-.success-msg .divider{border:none;border-top:1px solid var(--border);margin:16px 0}
+.prog-step.done {
+  background: rgba(85, 118, 209, 0.12);
+  color: var(--blue);
+}
+
+/* Borderless Section Cards */
+.section {
+  background: var(--white);
+  border: none;
+  padding: 8px 0 24px 0;
+  margin-bottom: 20px;
+  display: none;
+  position: relative;
+}
+
+.section.visible {
+  display: block;
+}
+
+/* Decorative 31-degree chevron angled tag design */
+.section-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-tag::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background: var(--gold);
+  clip-path: polygon(0 0, 100% 0, 69% 100%, 0% 100%);
+}
+
+.section-tag::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 6px;
+}
+
+.section-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+/* Grid & Form Inputs */
+.fg {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.fg.col2 { grid-template-columns: 1fr 1fr; }
+.fg.col1 { grid-template-columns: 1fr; }
+
+@media (max-width: 640px) {
+  .fg.col2 { grid-template-columns: 1fr; }
+  .header { padding: 0 20px; }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+}
+
+label .req {
+  color: var(--red);
+  margin-left: 2px;
+}
+
+label .hint {
+  font-weight: 400;
+  color: var(--text-muted);
+  font-size: 11px;
+  margin-left: 4px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+input[type=text],
+input[type=email],
+input[type=date],
+input[type=time],
+input[type=number],
+select,
+textarea {
+  font-family: var(--font);
+  font-size: 14px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+  color: var(--text);
+  width: 100%;
+  transition: border-color 0.15s ease;
+  letter-spacing: 0.01em;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 2px rgba(85, 118, 209, 0.15);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7'%3E%3Cpath d='M.5.5l5 5 5-5' stroke='%235576d1' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  appearance: none;
+}
+
+/* Flat Option Pills */
+.pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 13px;
+  color: var(--text-mid);
+  background: var(--blue-faint);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: 6px 16px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+.pill input { display: none; }
+
+.pill.sel {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+  font-weight: 600;
+}
+
+.cond {
+  display: none;
+}
+
+.cond.show {
+  display: block;
+  animation: fi 0.2s ease-out;
+}
+
+@keyframes fi {
+  from { opacity: 0; transform: translateY(-3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.auto-field {
+  background: var(--blue-faint) !important;
+  color: var(--blue-dark) !important;
+  border-color: var(--blue-accent) !important;
+  font-weight: 600;
+}
+
+/* Callout / Banner Notes */
+.note {
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  font-size: 13px;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+.note-info {
+  background: var(--blue-faint);
+  border: 1px solid var(--blue-accent);
+  color: var(--text-mid);
+}
+
+.note-lead {
+  background: #fefce8;
+  border: 1px solid var(--gold);
+  border-left: 4px solid var(--gold);
+  color: #713f12;
+  margin-bottom: 22px;
+}
+
+.note-lead strong {
+  color: #451a03;
+}
+
+.note a {
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* Flat Custom Date Chips */
+.date-adder {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.date-adder .field { flex: 1; }
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--blue-faint);
+  color: var(--blue);
+  border: 1px solid var(--blue-accent);
+  border-radius: var(--radius);
+  padding: 5px 10px 5px 14px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.chip button {
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 11px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chip-empty {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 8px;
+}
+
+/* Buttons & Navigation Row */
+.nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+
+.btn {
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 11px 24px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--text-mid);
+}
+
+.btn:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: var(--blue-faint);
+}
+
+.btn-primary {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue);
+}
+
+.btn-primary:hover {
+  background: var(--blue-dark);
+  border-color: var(--blue-dark);
+  color: #fff;
+}
+
+.btn-primary:disabled {
+  background: #cbd5e1;
+  border-color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.btn-add { padding: 10px 18px; font-size: 11px; }
+.btn-submit { padding: 14px 36px; font-size: 13px; }
+
+/* Flat Notification Toast */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  padding: 14px 18px;
+  border-radius: var(--radius);
+  font-family: var(--font);
+  font-size: 13px;
+  max-width: 360px;
+  z-index: 9999;
+  transform: translateY(16px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.toast.error {
+  background: var(--red-light);
+  color: var(--red);
+  border: 1px solid var(--red-border);
+}
+
+.toast.info {
+  background: var(--blue-faint);
+  color: var(--blue);
+  border: 1px solid var(--blue-accent);
+}
+
+.toast-ico {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.toast-title {
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.toast-msg {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+/* Borderless Success Screen with Full Crest */
+.success-screen {
+  display: none;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.success-screen.show { display: block; }
+
+.suc-crest {
+  max-width: 140px;
+  height: auto;
+  margin: 0 auto 28px;
+  display: block;
+}
+
+.success-screen h2 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 20px;
+}
+
+.success-msg {
+  background: var(--white);
+  border: none;
+  padding: 0;
+  max-width: 580px;
+  margin: 0 auto 36px;
+  text-align: left;
+  line-height: 1.75;
+}
+
+.success-msg p {
+  font-size: 14px;
+  color: var(--text-mid);
+  margin-bottom: 12px;
+}
+
+.success-msg p:last-child { margin-bottom: 0; }
+.success-msg strong { color: var(--blue); }
+.success-msg a { color: var(--blue); text-decoration: underline; }
+.success-msg .divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 20px 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
 </style>
 </head>
 <body>
 
 <header class="header">
-  <div class="header-logo">Alleyn's School <em>&middot;</em> Events</div>
+  <div class="header-logo">
+    <img 
+      class="header-crest" 
+      src="https://web.alleyns.org.uk/images/NewBranding/ChevronTitle-white.png" 
+      alt="Alleyn's Crest"
+    /></br></br>
+    <span> <em>&middot;</em> EVENTS</span>
+  </div>
 </header>
 
 <div class="page">
@@ -133,7 +622,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     <div class="prog-step" id="ps5" onclick="goStep(5)"><span class="sn">Step 5</span>Catering &amp; AV</div>
   </div>
 
-  <!-- ── STEP 1 · BOOKING DETAILS ── -->
   <div class="section visible" id="s1">
     <div class="section-tag">Step 1 of 5</div>
     <h2 class="section-title">Booking details</h2>
@@ -147,7 +635,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
           <option>Room Booking</option>
           <option>Room Booking with Refreshments (over 1 hour)</option>
           <option>Standing Reception</option>
-          <option>Seated Lunch or Dinner</option>
+          <option>Seated Dinner</option>
           <option>Other</option>
           <option disabled>──────── One of the following ────────</option>
           <option>Admissions Events</option>
@@ -159,7 +647,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
           <option>Carol Service</option>
           <option>Celebration Day</option>
           <option>Concert/Play</option>
-          <option>Dinner in 18DV</option>
+          <option>Dinner in 8DV</option>
           <option>Drinks and Canapes Reception</option>
           <option>End of term service</option>
           <option>EPQ Presentation</option>
@@ -217,7 +705,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     </div>
   </div>
 
-  <!-- ── STEP 2 · BUDGET & DEPARTMENT ── -->
   <div class="section" id="s2">
     <div class="section-tag">Step 2 of 5</div>
     <h2 class="section-title">Contact, department &amp; budget</h2>
@@ -232,8 +719,8 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
         <input type="text" id="reqName" placeholder="Full name">
       </div>
       <div class="field">
-        <label for="reqEmail">Email address <span class="req">*</span> <span class="hint">(Locked to login)</span></label>
-        <input type="email" id="reqEmail" placeholder="name@alleyns.org.uk" readonly>
+        <label for="reqEmail">Email address <span class="req">*</span></label>
+        <input type="email" id="reqEmail" placeholder="name@alleyns.org.uk">
       </div>
     </div>
 
@@ -326,7 +813,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     </div>
   </div>
 
-  <!-- ── STEP 3 · DATES & TIMES ── -->
   <div class="section" id="s3">
     <div class="section-tag">Step 3 of 5</div>
     <h2 class="section-title">Dates &amp; times</h2>
@@ -342,7 +828,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       </div>
     </div>
 
-    <!-- Recurring block -->
     <div class="cond" id="condRecurring">
       <div class="fg col2">
         <div class="field">
@@ -383,7 +868,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       </div>
     </div>
 
-    <!-- Single-date block (non-recurring) -->
     <div class="cond" id="condSingle">
       <div class="fg col1" style="margin-bottom:8px">
         <div class="field">
@@ -418,7 +902,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       </div>
     </div>
 
-    <!-- Times & setup (always shown) -->
     <div class="fg col2" style="margin-top:18px">
       <div class="field">
         <label for="arrivalTime">Arrival / doors open time</label>
@@ -455,7 +938,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     </div>
   </div>
 
-  <!-- ── STEP 4 · GUESTS & VENUE ── -->
   <div class="section" id="s4">
     <div class="section-tag">Step 4 of 5</div>
     <h2 class="section-title">Guests &amp; venue</h2>
@@ -482,7 +964,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       <div class="fg col1" style="margin-bottom:0">
         <div class="field">
           <label for="venueSpace">Which space?</label>
-          <input type="text" id="venueSpace" placeholder="e.g. The Edward Alleyn Theatre, Great Hall, 18DV, EAB…">
+          <input type="text" id="venueSpace" placeholder="e.g. The Edward Alleyn Theatre, Great Hall, 8DV, EAB…">
         </div>
       </div>
     </div>
@@ -502,7 +984,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     </div>
   </div>
 
-  <!-- ── STEP 5 · CATERING & PRODUCTION ── -->
   <div class="section" id="s5">
     <div class="section-tag">Step 5 of 5</div>
     <h2 class="section-title">Catering &amp; production</h2>
@@ -541,9 +1022,8 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     </div>
   </div>
 
-  <!-- ── SUCCESS ── -->
   <div class="success-screen" id="successScreen">
-    <div class="suc-icon">✓</div>
+    <img src="https://web.alleyns.org.uk/images/NewBranding/Crest.png" alt="Alleyn's Crest" class="suc-crest">
     <h2>Enquiry received</h2>
     <div class="success-msg">
       <p>Thank you for submitting your booking enquiry. A member of the Alleyn's Events team will review your request and be in touch with you shortly.</p>
@@ -573,7 +1053,7 @@ const CAT_MAP = {
   "Admissions Events":{s:"A",o:"2"},"APA AGM":{s:"C",o:"3"},"Assembly":{s:"D",o:"4"},
   "Battle of the Bands":{s:"C",o:"3"},"Bear Pit":{s:"C",o:"3"},"Building Opening":{s:"B",o:"2"},
   "Carol Service":{s:"B",o:"2"},"Celebration Day":{s:"A",o:"1"},"Concert/Play":{s:"B",o:"2"},
-  "Dinner in 18DV":{s:"C",o:"3"},"Drinks and Canapes Reception":{s:"C",o:"3"},
+  "Dinner in 8DV":{s:"C",o:"3"},"Drinks and Canapes Reception":{s:"C",o:"3"},
   "End of term service":{s:"D",o:"4"},"EPQ Presentation":{s:"C",o:"3"},
   "External Event":{s:"B",o:"2"},"Festival of Inspiration":{s:"C",o:"2"},
   "Founders Day":{s:"A",o:"1"},"Gala Dinner":{s:"B",o:"2"},"Holly Fair":{s:"B",o:"2"},
@@ -581,8 +1061,9 @@ const CAT_MAP = {
   "Internal meeting":{s:"D",o:"4"},"LAMDA Showcase":{s:"C",o:"3"},
   "Lectures (external)":{s:"B",o:"2"},"Lectures (internal)":{s:"D",o:"4"},
   "Options Evening":{s:"C",o:"3"},"Pastoral Evening":{s:"C",o:"3"},
-  "Recital":{s:"C",o:"3"},"Reunion":{s:"B",o:"2"},"Seated Lunch":{s:"C",o:"3"},
-  "Staff briefing":{s:"D",o:"4"},"Summits (e.g MUN, YOU)":{s:"B",o:"2"},
+  "Recital":{s:"C",o:"3"},"Reunion":{s:"B",o:"2"},"Room Booking":{s:"D",o:"4"},
+  "Room Booking with Refreshments (over 1 hour)":{s:"D",o:"4"}, "Seated Lunch":{s:"C",o:"3"}, "Seated Dinner":{s:"C",o:"3"},
+  "Standing Reception":{s:"C",o:"3"}, "Staff briefing":{s:"D",o:"4"},"Summits (e.g MUN, YOU)":{s:"B",o:"2"},
   "Theme weeks":{s:"C",o:"2"},"Variety Show":{s:"C",o:"2"},
   "Year 11 Prom":{s:"C",o:"2"},"Year 13 Graduation":{s:"B",o:"2"}
 };
@@ -609,12 +1090,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (data && data.clientPrincipal) {
       const user = data.clientPrincipal;
       const email = user.userDetails;
-      const emailInput = document.getElementById('reqEmail');
-      
-      if (emailInput && email) {
-        emailInput.value = email;
-        emailInput.classList.add('auto-field');
-      }
+      document.getElementById('reqEmail').value = email || '';
+      const nameFromClaims = user.claims?.find(c => c.typ === 'name')?.val;
+      document.getElementById('reqName').value = nameFromClaims || email.split('@')[0] || '';
     }
   } catch (err) {
     // SWA auth details endpoint not reachable or unauthenticated local dev
@@ -788,6 +1266,9 @@ async function handleSubmit() {
     if (!response.ok) {
       throw new Error(`Server returned status code ${response.status}`);
     }
+
+    // Hide page heading on successful submission
+    document.querySelector('.page-head').classList.add('hidden');
 
     document.getElementById('progressBar').style.display = 'none';
     ['s1','s2','s3','s4','s5'].forEach(id => document.getElementById(id).classList.remove('visible'));
