@@ -720,7 +720,7 @@ select {
       </div>
       <div class="field">
         <label for="reqEmail">Email address <span class="req">*</span></label>
-        <input type="email" id="reqEmail" placeholder="name@alleyns.org.uk">
+        <input type="email" id="reqEmail" placeholder="name@alleyns.org.uk" readonly style="background-color: #f1f5f9; color: #64748b; cursor: not-allowed; border-color: #e2e8f0;">
       </div>
     </div>
 
@@ -1091,8 +1091,6 @@ window.addEventListener('DOMContentLoaded', async () => {
       const user = data.clientPrincipal;
       const email = user.userDetails;
       document.getElementById('reqEmail').value = email || '';
-      const nameFromClaims = user.claims?.find(c => c.typ === 'name')?.val;
-      document.getElementById('reqName').value = nameFromClaims || email.split('@')[0] || '';
     }
   } catch (err) {
     // SWA auth details endpoint not reachable or unauthenticated local dev
