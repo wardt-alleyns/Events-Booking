@@ -837,7 +837,7 @@ select {
       </div>
       <div class="fg col1" style="margin-bottom:8px">
         <div class="field">
-          <label>How often does it recur?</label>
+          <label>How often does it recur? <span class="req">*</span></label>
           <div class="pill-group">
             <label class="pill"><input type="radio" name="recurFreq" value="Weekly" onchange="onFreqChange('Weekly')"> Weekly</label>
             <label class="pill"><input type="radio" name="recurFreq" value="Monthly" onchange="onFreqChange('Monthly')"> Monthly</label>
@@ -1249,6 +1249,13 @@ async function handleSubmit() {
   if (!d.department){ showToast('error','Required','Please select which area this booking is for.'); return goStep(2); }
   if (!d.isRecurring){ showToast('error','Required','Please indicate whether this is a recurring booking.'); return goStep(3); }
   if (!d.guestCount){ showToast('error','Required','Please enter the expected number of guests.'); return goStep(4); }
+  if (d.isRecurring === 'Yes') {
+    if (!d.recurFirst) { showToast('error','Required','Please select the date for the first occurrence.'); return goStep(3); }
+    if (!d.recurFreq)  { showToast('error','Required','Please select how often the booking recurs.'); return goStep(3); }
+    if (d.recurFreq === 'Custom dates' && d.customDates.length === 0) {
+      showToast('error','Required','Please add at least one custom date.'); return goStep(3);
+    }
+  }
 
   const btn = document.getElementById('btnSubmit');
   btn.disabled = true;
